@@ -3,11 +3,12 @@ import { useForm } from "react-hook-form";
 
 const ContactForm = () => {
   const [data, setData] = useState();
-  const { register, errors, handleSubmit } = useForm({
+  const { register, errors, handleSubmit, reset } = useForm({
     mode: "onBlur",
   });
   const onSubmit = (data) => {
     setData(data);
+    reset();
   };
 
   return (
@@ -18,7 +19,9 @@ const ContactForm = () => {
           <input
             name="firstName"
             placeholder="Edd"
-            ref={register({ required: true, maxLength: 3 })}
+            id="firstName"
+            type="text"
+            ref={register({ required: true, minLength: 3 })}
           />
           {errors.firstName && (
             <p>Looks like there was an error: {errors.firstName.type}</p>
@@ -30,6 +33,8 @@ const ContactForm = () => {
           <input
             name="lastName"
             placeholder="Burke"
+            id="lastName"
+            type="text"
             ref={register({ required: true })}
           />
           {errors.lastName && (
@@ -38,24 +43,34 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="email" placeholder="bluebill1049@hotmail.com">
+          <label htmlFor="email">
             Email*
           </label>
-          <input name="email" ref={register({ required: true })} />
+          <input name="email" 
+          type="email"
+          id="email"
+          placeholder="bluebill1049@hotmail.com"
+          ref={register({ required: true })} />
           {errors.email && (
             <p>Looks like there was an error: {errors.email.type}</p>
           )}
         </div>
+
         <div>
           <label htmlFor="message">Message</label>
-          <textarea name="message" ref={register({ required: false })} />
+          <textarea name="message"
+          id="message"
+          ref={register({ required: false })} />
         </div>
+
         {data && (
           <pre style={{ textAlign: "left", color: "white" }}>
             {JSON.stringify(data, null, 2)}
           </pre>
         )}
-        <input type="submit" />
+        <button name="submit" type="submit">
+          Submit 
+        </button>
       </form>
     </div>
   );
